@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package taskmanager;
+
+import "google/protobuf/empty.proto";
+
+message Task {
+  int32 id = 1;
+  string title = 2;
+  string status = 3;
+}
+
+message CreateTaskRequest { string title = 1; }
+message GetTaskRequest { int32 id = 1; }
+message UpdateTaskRequest {
+  int32 id = 1;
+  string status = 2;
+}
+
+service TaskService {
+  rpc CreateTask(CreateTaskRequest) returns (Task);
+  rpc GetTask(GetTaskRequest) returns (Task);
+  rpc ListTasks(google.protobuf.Empty) returns (stream Task);
+  rpc UpdateTask(UpdateTaskRequest) returns (Task);
+  rpc StreamTaskUpdates(stream UpdateTaskRequest) returns (stream Task);
+}

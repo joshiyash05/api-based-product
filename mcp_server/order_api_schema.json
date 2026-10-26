@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "order_api MCP tool input",
+  "type": "object",
+  "properties": {
+    "action": {"type": "string", "enum": ["create_order", "get_order", "list_orders"]},
+    "item": {"type": "string", "minLength": 1},
+    "quantity": {"type": "integer", "minimum": 1},
+    "order_id": {"type": "integer", "minimum": 1}
+  },
+  "required": ["action"],
+  "additionalProperties": false,
+  "allOf": [
+    {"if": {"properties": {"action": {"const": "create_order"}}}, "then": {"required": ["item", "quantity"]}},
+    {"if": {"properties": {"action": {"const": "get_order"}}}, "then": {"required": ["order_id"]}},
+    {"if": {"properties": {"action": {"const": "list_orders"}}}, "then": {"not": {"anyOf": [{"required": ["item"]}, {"required": ["quantity"]}, {"required": ["order_id"]}]}}}
+  ]
+}
